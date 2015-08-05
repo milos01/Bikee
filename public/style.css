@@ -1,0 +1,11 @@
+.holder{
+	position: absolute;
+	top:0px;
+	bottom: 0px;
+	width:100%;
+	background-image: url('http://images7.alphacoders.com/345/345366.jpg');
+	-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
