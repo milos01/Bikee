@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('head')
 	@parent
-	<title>{{Auth::user()->ImePrz}}'s profile</title>
+	<title>{{$user->ImePrz}}'s profile</title>
 	<script src="https://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
 @stop
 @section('controles')
@@ -27,30 +27,23 @@
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>
 @stop
 @section('content')
+@section('content')
 <div class="row" style="margin-bottom:40px;">
 	<div class="col-sm-5 col-md-3">
 	  	<div class="caption">
 	    </div>
 		<div class="thumbnail">
-		<img src="{{Auth::user()->pic}}">
+		<img src="{{$user->pic}}">
 		</div>
 	</div>
 </div>
-@if(Auth::user()->TipKor == 'renter')
+
 	<!-- <div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;margin-top:400px;border:1px solid red;"></div> -->
-	<ul class="list-group pull-left" style="width:207px">
-	<li class="list-group-item"><a href="#" data-target = "#group_form" data-toggle= "modal" style="text-decoration:none;color:black">Add bike</a></li>
-	<li class="list-group-item"><a href="#" data-target = "#edit_bike" data-toggle= "modal" style="text-decoration:none;color:black">Search bike</a></li>
-	<li class="list-group-item"><a href="{{URL::route('viewRented')}}" style="text-decoration:none;color:black">View rented bikes</a></li>
-	<li class="list-group-item">Inbox</li>
-	</ul>
-	@else
-	<!-- <div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;border:1px solid red;"></div> -->
-	<ul class="list-group pull-left" style="width:207px">
+	<ul class="list-group pull-left" style="width:207px;margin-top:-260px;margin-left:250px;">
+		<li class="list-group-item"><a href="#" data-target = "#group_form" data-toggle= "modal" style="text-decoration:none;color:black">Send massage</a></li>
 		<li class="list-group-item"><a href="#" data-target = "#edit_bike" data-toggle= "modal" style="text-decoration:none;color:black">Search bike</a></li>
-		<li class="list-group-item">Inbox</li>
 	</ul>
-	@endif
+	
 	<!-- Add Bike -->
 	<div class="modal fade"  id = "group_form" tabindex = "-1" role = "dialog"aria-hidden ="true" >
 		<div class = "modal-dialog" style="width:300px; height:500px">
@@ -102,75 +95,25 @@
 		</div>
 	</div>
 <!-- End Add Bike -->
-<!-- Search Bike -->
-<div class="modal fade"  id = "edit_bike" tabindex = "-1" role = "dialog"aria-hidden ="true" >
-		<div class = "modal-dialog" style="width:300px; height:500px">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type ="button" class = "close" data-dismiss="modal">
-						<span aria-hidden = "true">&times;</span>
-						<span class = "sr-only">Close</span>
-					</button>
-					<h4 class="modal-title">Search Bike</h4>
-				</div>
-				<div class="modal-body">
-					<form id = "srcBike" method= "post"action= "{{URL::route('userHomeTwo')}}">
-						<div class="form-group">
-	  						<label for="sel1">Marka:</label>
-	  						<select class="form-control" id="marka" name="marka">
-	  						<option selected="selected"value="">All</option>
-	  						@foreach($bikesMarka as $bikeMarka)
-							    <option>{{$bikeMarka->marka}}</option>
-							@endforeach
-	  						</select>
-						</div>
-
-						<div class="form-group">
-	  						<label for="sel1">Tip:</label>
-	  						<select class="form-control" id="tip" name="tip">
-	  						<option selected="selected"value="">All</option>
-	  						@foreach($bikesTip as $bikeTip)
-							    <option>{{$bikeTip->tip}}</option>
-							@endforeach
-	  						</select>
-						</div>
-
-						<div class="form-group">
-	  						<label for="sel1">Ocena from:</label>
-	  						<select class="form-control" id="ocenaFrom" name="ocenaFrom">
-							    <option selected="selected" value="1">1</option>
-							    <option value="2">2</option>
-							    <option value="3">3</option>
-							    <option value="4">4</option>
-							    <option value="5">5</option>
-	  						</select>
-						</div>
-						<div class="form-group">
-	  						<label for="sel1">Ocena to:</label>
-	  						<select class="form-control" id="ocenaTo" name="ocenaTo">
-	  							<option selected="selected" value="5">5</option>
-	  							<option value="4">4</option>
-	  							<option value="3">3</option>
-	  							<option value="2">2</option>
-	  							<option value="1">1</option>
-	  						</select>
-						</div>
-						<input type="hidden" name="secret" id="secret" value="111">
-
-						<div class="modal-footer">
-							<button type="submit"class = "btn btn-primary"data-dismiss = "modal" id = "searchBike">Search</button>
-						</div>
-						{{Form::token()}} 
-					</form>
-				</div>
-				
-				
+<!-- View Bike -->
+<div class="modal fade"  id = "showBike" tabindex = "-1" role = "dialog"aria-hidden ="true" >
+	<div class = "modal-dialog" style="width:300px; height:500px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type ="button" class = "close" data-dismiss="modal">
+					<span aria-hidden = "true">&times;</span>
+					<span class = "sr-only">Close</span>
+				</button>
+					<h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body">
+					
 			</div>
 		</div>
 	</div>
-<!-- End Search Bike -->
+</div>
 <!-- Overall -->
-<div class="panel panel-default pull-left" style="width:600px;margin-top:-268px;margin-left:260px;position:absolute">
+<div class="panel panel-default" style="margin-left:0px;width:860px;position:absolute">
   <div class="panel-heading">Overall 
   	<div class="dropdown pull pull-right" style="margin-top:-7px">
 	  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -191,7 +134,7 @@
   <ul class="media-list">
   @if(Auth::user()->TipKor == 'renter')
 	  @foreach($bikes as $bike)
-	  	@if($bike->nadlezni == Auth::user()->id)
+	  
 		  <li class="media">
 		    <div class="media-left">
 		      <a href="#">
@@ -217,7 +160,7 @@
 			@endif
 		  </li>
 		  <hr>
-		@endif
+		
 	  @endforeach
 	@elseif(Auth::user()->TipKor == 'kupac')
 		@foreach($bikes as $bike)
@@ -256,24 +199,6 @@
   </div>
 </div>
 <!-- End Overall -->
-<!-- View Bike -->
-<div class="modal fade"  id = "showBike" tabindex = "-1" role = "dialog"aria-hidden ="true" >
-	<div class = "modal-dialog" style="width:300px; height:500px">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type ="button" class = "close" data-dismiss="modal">
-					<span aria-hidden = "true">&times;</span>
-					<span class = "sr-only">Close</span>
-				</button>
-					<h4 class="modal-title"></h4>
-			</div>
-			<div class="modal-body">
-					
-			</div>
-		</div>
-	</div>
-</div>
-<!-- End View Bike -->
 <script type="text/javascript">
     	if (navigator.geolocation) {
 
@@ -297,21 +222,19 @@
       position: new google.maps.LatLng(lat,lng),
       map: map,
       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-      title: '{{Auth::user()->username}}'
+      title: 'Your position'
         
   	});
    <?php 
    $users = User::all();
-
-   foreach ($users as $user) {
-   	if ($user->TipKor == "renter"){
+   foreach ($users as $user1) {
+   	if ($user1->TipKor == "renter" && $user->id == $user1->id){
    	?>
    	marker1 = new google.maps.Marker({
-      position: new google.maps.LatLng("{{$user->lat}}","{{$user->lng}}"),
+      position: new google.maps.LatLng("{{$user1->lat}}","{{$user1->lng}}"),
       map: map,
       icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-      title: '{{$user->id}}',
-      url: '{{$user->username}}' 
+      title: '{{$user1->ImePrz}}'
   	});
   	
   	<?php
@@ -320,11 +243,8 @@
    ?>
      
 }
-google.maps.event.addListener(marker1, 'click', function() {
-      window.location.href = marker1.url;
-    }); 
-</script>
 
+</script>
 @stop
 @section('footer')
 @stop
@@ -332,8 +252,3 @@ google.maps.event.addListener(marker1, 'click', function() {
 	 @parent
 	 <script src = "../../js/app.js" type="text/javascript"></script>
 @stop
-@if(Session::has('modal'))
-	<script type="text/javascript">
-		$("{{Session::get('modal')}}").modal('show');
-	</script>
-@endif

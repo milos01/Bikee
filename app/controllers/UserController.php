@@ -52,13 +52,27 @@ class UserController extends BaseController{
 			if($auth){
 				//ako je loginov
 				
-				return Redirect::route('home');
+				return Redirect::route('userHome');
 			}else{
 				//ake nije uspesno logovan
 				return Redirect::route('home')->with('fail', 'Something wrong with input elements.');
 			}
 		}
 	
+	}
+	public function userHomeMain($id){
+		$user = User::find($id);
+		$rented = Rent::all();
+		$bikesMarka =   Bike::distinct()->select('marka')->get();
+		$bikesTip =   Bike::distinct()->select('tip')->get();
+		$bikes = Bike::where('nadlezni','=',$id)->get();
+		if ($user) {
+			return View::make('layouts.userMain')->with('bikes',$bikes)->with('user',$user)->with('rented',$rented)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip);
+		}else{
+			return Redirect::route('userHome');
+		}
+		
+		
 	}
 	public function getLogout(){
 		Auth::logout();
