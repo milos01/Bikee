@@ -16,7 +16,7 @@ Route::get('/', array('uses'=>'HomeController@showWelcome', 'as'=>'home'))->befo
 Route::group(array('prefix'=>'/user','before'=>'auth'),function(){
 	Route::get('/', array('uses'=>'UserController@userHome', 'as'=>'userHome'));
 	Route::post('/', array('uses'=>'UserController@userHome', 'as'=>'userHomeTwo'));
-	Route::get('/{username}', array('uses'=>'UserController@userHomeMain', 'as'=>'userHomeMain'));
+	Route::get('/profile/{username}', array('uses'=>'UserController@userHomeMain', 'as'=>'userHomeMain'));
 	Route::get('/search/{tip}/{cont}',array('uses'=>'UserController@searchBike','as'=>'searchBike'));
  	Route::post('/add',array('uses'=>'BikeController@addBike','as'=>'addBike'));
  	Route::get('/bike/{id}',array('uses'=>'BikeController@showBike','as'=>'showBike'));

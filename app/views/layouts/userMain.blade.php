@@ -37,13 +37,17 @@
 		</div>
 	</div>
 </div>
-
 	<!-- <div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;margin-top:400px;border:1px solid red;"></div> -->
 	<ul class="list-group pull-left" style="width:207px;margin-top:-260px;margin-left:250px;">
 		<li class="list-group-item"><a href="#" data-target = "#group_form" data-toggle= "modal" style="text-decoration:none;color:black">Send massage</a></li>
 		<li class="list-group-item"><a href="#" data-target = "#edit_bike" data-toggle= "modal" style="text-decoration:none;color:black">Search bike</a></li>
+		<li id="routebtn" class="list-group-item"><a href="#"  style="text-decoration:none;color:black">Drive directions</a></li>
+		<!-- <li id="removeDir" class="list-group-item"><a href="#"  style="text-decoration:none;color:black"> r Drive directions</a></li> -->
+		<li id="walkbtn" class="list-group-item"><a href="#"  style="text-decoration:none;color:black">Walk directions</a></li>
+		<!-- <li id="removeWalk" class="list-group-item"><a href="#"  style="text-decoration:none;color:black"> r Walk directions</a></li> -->
+		
+
 	</ul>
-	
 	<!-- Add Bike -->
 	<div class="modal fade"  id = "group_form" tabindex = "-1" role = "dialog"aria-hidden ="true" >
 		<div class = "modal-dialog" style="width:300px; height:500px">
@@ -200,6 +204,8 @@
 </div>
 <!-- End Overall -->
 <script type="text/javascript">
+		var directionsDisplay;
+  		var directionsService = new google.maps.DirectionsService();
     	if (navigator.geolocation) {
 
         	navigator.geolocation.getCurrentPosition(showPosition);
@@ -207,19 +213,28 @@
         	x.innerHTML = "Geolocation is not supported by this browser.";
     	}
  	function showPosition(position) {
-  	 	var lat = position.coords.latitude; 
-  	 	var lng = position.coords.longitude; 
-  	 	var latlng = new google.maps.LatLng(lat, lng);
-
+  	 	var latNum = position.coords.latitude; 
+  	 	var lngNum = position.coords.longitude;  
+  	 	var latlng = new google.maps.LatLng(latNum, lngNum);
+  	 	directionsDisplay = new google.maps.DirectionsRenderer({
+  	 		suppressMarkers: true
+  	 	});
+  	
+  	 	
+ 
     var myOptions = {
         zoom: 14,
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("map_canvas02"),myOptions);
-
+    directionsDisplay.setMap(map);
+    google.maps.event.addDomListener(document.getElementById('routebtn'), 'click', function(){calcRoute(1)});
+    // google.maps.event.addDomListener(document.getElementById('removeDir'), 'click', removeDirections);
+    google.maps.event.addDomListener(document.getElementById('walkbtn'), 'click', function(){calcRoute(2)});
+    // google.maps.event.addDomListener(document.getElementById('removeWalk'), 'click', removeDirections);
    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(lat,lng),
+      position: new google.maps.LatLng(latNum,lngNum),
       map: map,
       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
       title: 'Your position'
@@ -230,6 +245,8 @@
    foreach ($users as $user1) {
    	if ($user1->TipKor == "renter" && $user->id == $user1->id){
    	?>
+   	var latNum2 = "{{$user1->lat}}";
+   	var lngNum2 = "{{$user1->lng}}";
    	marker1 = new google.maps.Marker({
       position: new google.maps.LatLng("{{$user1->lat}}","{{$user1->lng}}"),
       map: map,
@@ -241,9 +258,51 @@
   	}
    }
    ?>
-     
+   function calcRoute(dirOpt) {
+    var start = new google.maps.LatLng(latNum, lngNum);
+    var end = new google.maps.LatLng(latNum2, lngNum2);
+    if(dirOpt == 1){
+	    var request = {
+	      origin: start,
+	      destination: end,
+	      travelMode: google.maps.TravelMode.DRIVING,
+	    };
+	}else if(dirOpt == 2){
+		var request = {
+	      origin: start,
+	      destination: end,
+	      travelMode: google.maps.TravelMode.WALKING,
+	    };
+	}
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+        directionsDisplay.setMap(map);
+        var distance = response.routes[0].legs[0].distance.value
+        alert((distance/1000).toFixed(2)+" km");
+      } else {
+        alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+      }
+    });
+  }
+  function removeDirections(){
+  		directionsDisplay.setMap(null);
+  	}
+
+  String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
 }
 
+}
 </script>
 @stop
 @section('footer')

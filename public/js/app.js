@@ -1,5 +1,6 @@
 
 $(document).ready(function(){
+	
 	$(".alertDiv1").delay(2300).fadeOut();
 
 	$("#AddBike").click(function(){
@@ -63,6 +64,7 @@ $(document).ready(function(){
 	$(".delete_group").click(function(event){
 		$(".delete_group").prop('href','/forum/group/'+event.target.id+'/delete');
 	});
+ 
 
 });
 

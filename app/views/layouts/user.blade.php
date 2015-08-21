@@ -24,9 +24,11 @@
 		</div>	
 	@endif
 </div>
+
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>
 @stop
 @section('content')
+
 <div class="row" style="margin-bottom:40px;">
 	<div class="col-sm-5 col-md-3">
 	  	<div class="caption">
@@ -36,6 +38,7 @@
 		</div>
 	</div>
 </div>
+
 @if(Auth::user()->TipKor == 'renter')
 	<!-- <div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;margin-top:400px;border:1px solid red;"></div> -->
 	<ul class="list-group pull-left" style="width:207px">
@@ -275,6 +278,7 @@
 </div>
 <!-- End View Bike -->
 <script type="text/javascript">
+
     	if (navigator.geolocation) {
 
         	navigator.geolocation.getCurrentPosition(showPosition);
@@ -282,10 +286,10 @@
         	x.innerHTML = "Geolocation is not supported by this browser.";
     	}
  	function showPosition(position) {
-  	 	var lat = position.coords.latitude; 
-  	 	var lng = position.coords.longitude; 
-  	 	var latlng = new google.maps.LatLng(lat, lng);
-
+  	 	var latNum = position.coords.latitude; 
+  	 	var lngNum = position.coords.longitude; 
+  	 	var latlng = new google.maps.LatLng(latNum, lngNum);
+  	
     var myOptions = {
         zoom: 14,
         center: latlng,
@@ -294,10 +298,10 @@
     var map = new google.maps.Map(document.getElementById("map_canvas02"),myOptions);
 
    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(lat,lng),
+      position: new google.maps.LatLng(latNum,lngNum),
       map: map,
       icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-      title: '{{Auth::user()->username}}'
+      title: 'Your position'
         
   	});
    <?php 
@@ -306,23 +310,27 @@
    foreach ($users as $user) {
    	if ($user->TipKor == "renter"){
    	?>
+   	var latNum2 = "{{$user->lat}}";
+   	var lngNum2 = "{{$user->lng}}";
    	marker1 = new google.maps.Marker({
       position: new google.maps.LatLng("{{$user->lat}}","{{$user->lng}}"),
       map: map,
       icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-      title: '{{$user->id}}',
-      url: '{{$user->username}}' 
+      title: '{{$user->ImePrz}} (renter)'
   	});
-  	
+  	google.maps.event.addListener(marker1, 'click', function() {
+        window.location.href = "/user/profile/{{$user->id}}";
+    });
   	<?php
   	}
    }
    ?>
+   
+
+   
      
 }
-google.maps.event.addListener(marker1, 'click', function() {
-      window.location.href = marker1.url;
-    }); 
+ 
 </script>
 
 @stop
