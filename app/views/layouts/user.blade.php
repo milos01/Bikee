@@ -29,18 +29,20 @@
 				@endif
 			@endif
 		@endforeach
+		@if($counter >= 1)
 		<span id="notification_count" style="
-padding: 3px 7px 3px 7px;
-background: #cc0000;
-color: #ffffff;
-font-weight: bold;
-margin-left: -18px;
-border-radius: 9px;
--moz-border-radius: 9px; 
--webkit-border-radius: 9px;
- position: absolute;
- margin-top: -11px;
- font-size: 11px;">{{$counter}}</span>
+			padding: 3px 7px 3px 7px;
+			background: #cc0000;
+			color: #ffffff;
+			font-weight: bold;
+			margin-left: -18px;
+			border-radius: 9px;
+			-moz-border-radius: 9px; 
+			-webkit-border-radius: 9px;
+			 position: absolute;
+			 margin-top: -11px;
+			 font-size: 11px;">{{$counter}}</span>
+ 		@endif
 		{{Auth::user()->ImePrz}}
 		<a href="{{URL::route('getLogout')}}">
 			<button type="button" class="btn btn-default" aria-label="Left Align">

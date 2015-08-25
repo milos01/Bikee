@@ -102,18 +102,15 @@ $(document).ready(function(){
  
  $("#notButt").on('click',function(e){
     e.preventDefault();
-    // document.getElementById("notification_count").style.visibility='hidden';
-     $.ajax({type: "POST",
-            url: "{{URL::route('viewBikes')}}",
-            success: function(result){
-                alert(result);
-            },
-            // error: function (jqXHR, textStatus) {
-            //     //displayCallResults(jqXHR);
-            //     alert(textStatus);
-            // }
-    });
-return false;
+    var root_url = "<?php URL::route('viewBikes') ?>";
+
+
+    $.ajax({
+            type: "post",
+            url: "user/bike/view",
+            
+        });
+
 });
 
 });

@@ -148,7 +148,10 @@ class UserController extends BaseController{
 	}
 	public function viewBikes(){
 		if(Request::ajax()){
-		return "aloo";
-	}
+			DB::table('notifications')
+            ->where('read', 0 )
+            ->where('to',Auth::user()->id)
+            ->update(array('read' => 1));
+		}
 	}
 }
