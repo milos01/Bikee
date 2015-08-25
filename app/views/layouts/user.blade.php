@@ -9,12 +9,38 @@
 @section('image')
 @stop
 @section('lol')
+
 <div class = "navbar navbar-default">
 <div class = "container pull-left" style="padding:25px;font-family: 'Lobster';font-size:50px;"><a href="{{URL::route('userHome')}}" style="text-decoration:none;color:rgba(64, 62, 59, 1);">Bikee</a></div>	
 	
 	@if(Auth::check())
 		
 		<div class="pull-right" style="margin-top:40px;width:250px;height:50px;">
+		<div class="pull-left" id="notButt" style="cursor:pointer;font-size:18px;padding:0px 0px;width:18px;margin-right:10px;">
+			<span class="glyphicon glyphicon-globe" aria-hidden="true" style="margin-top:4px;"></span>
+		</div>
+		<?php
+			$counter = 0;
+		?>
+		@foreach($noti as $notification)
+			@if(Auth::user()->id == $notification->to)
+				@if($notification->read == 0)
+					<?php $counter += 1; ?>
+				@endif
+			@endif
+		@endforeach
+		<span id="notification_count" style="
+padding: 3px 7px 3px 7px;
+background: #cc0000;
+color: #ffffff;
+font-weight: bold;
+margin-left: -18px;
+border-radius: 9px;
+-moz-border-radius: 9px; 
+-webkit-border-radius: 9px;
+ position: absolute;
+ margin-top: -11px;
+ font-size: 11px;">{{$counter}}</span>
 		{{Auth::user()->ImePrz}}
 		<a href="{{URL::route('getLogout')}}">
 			<button type="button" class="btn btn-default" aria-label="Left Align">
@@ -24,7 +50,21 @@
 		</div>	
 	@endif
 </div>
-
+<div class="container"  id="notificationDiv" style="background-color:#ccc;display:none;position:absolute;border:1px solid gray;width:350px;height:200px;top:85px;right:120px;z-index:9999">
+<?php
+	$count = 1;
+?>
+@foreach($noti as $notification)
+	@if(Auth::user()->id == $notification->to)
+	<div class="container " id = "{{$notification->id}}"style="border-bottom:1px solid gray;width:200px">
+		Your {{$notification->bike}} bike was rented...
+	</div>
+	<?php
+		$count += 1;
+	?> 
+	@endif
+@endforeach
+</div>
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>
 @stop
 @section('content')
@@ -277,7 +317,9 @@
 	</div>
 </div>
 <!-- End View Bike -->
+@if(Auth::user()->TipKor == "kupac")
 <script type="text/javascript">
+
 
     	if (navigator.geolocation) {
 
@@ -330,15 +372,37 @@
    
      
 }
- 
+
 </script>
+@else
+<script type="text/javascript">
+
+	var latlng = new google.maps.LatLng("{{Auth::user()->lat}}","{{Auth::user()->lng}}");
+    var myOptions = {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    
+    var map = new google.maps.Map(document.getElementById("map_canvas02"),myOptions);
+
+   var marker = new google.maps.Marker({
+      position: new google.maps.LatLng("{{Auth::user()->lat}}","{{Auth::user()->lng}}"),
+      map: map,
+      icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+      title: 'Your position'
+        
+  	});  
+
+</script>
+@endif
 
 @stop
 @section('footer')
 @stop
 @section('javascript')
 	 @parent
-	 <script src = "../../js/app.js" type="text/javascript"></script>
+
 @stop
 @if(Session::has('modal'))
 	<script type="text/javascript">

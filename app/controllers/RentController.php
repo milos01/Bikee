@@ -11,8 +11,15 @@ class RentController extends BaseController{
 		if ($validate->fails()) {
 			return Redirect::route('showBike',$id)->withErrors($validate)->withInput()->with('fail','Incorect input data!');
 		}else{
+			$noti = new Notifications();
+			$noti->from = Auth::user()->id;
+			$noti->to = $nadlezni;
+			$noti->bike = $id;
+			$noti->read = 0;
+
 			$bike = Bike::find($id);
 			$bike->status = 1;
+
 			$rent = new Rent();
 			$rent->gazda = $nadlezni;
 			$rent->who = Auth::user()->id;
@@ -22,7 +29,7 @@ class RentController extends BaseController{
 			$rent->exp = Input::get('exp');
 			$rent->day = Input::get('day');
 			
-			if ($rent->save() && $bike->save()) {
+			if ($rent->save() && $bike->save() && $noti->save()) {
 			 	return Redirect::route('showBike',$id)->with('success','You rented bike successfully');
 			}else{
 			 	return Redirect::route('showBike',$id)->with('fail','An error occured!');

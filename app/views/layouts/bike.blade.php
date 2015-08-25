@@ -218,7 +218,6 @@
 @stop
 @section('javascript')
 	 @parent
-	 <script src = "../../js/app.js" type="text/javascript"></script>
 @stop
 @if(Session::has('modal'))
 	<script type="text/javascript">

@@ -25,6 +25,7 @@ Route::group(array('prefix'=>'/user','before'=>'auth'),function(){
  	Route::post('/bike/comment/{id}/{idb}',array('uses'=>'CommentController@postComment','as'=>'postComment'));
  	Route::get('/bike/edit/{id}',array('uses'=>'BikeController@editBike','as'=>'editBike'));
  	Route::get('/bike/sort/{id}',array('uses'=>'UserController@sortBikes','as'=>'sortBikes'));
+ 	Route::post('/bike/view',array('uses'=>'UserController@viewBikes','as'=>'viewBikes'));
  	Route::post('/bike/editb/{id}',array('uses'=>'BikeController@editBikeAll','as'=>'editBikeAll'));
  	Route::post('/bike/rent/{id}/{nadlezni}',array('uses'=>'RentController@rentBike','as'=>'rentBike'));
 

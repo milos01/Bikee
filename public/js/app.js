@@ -1,12 +1,47 @@
 
 $(document).ready(function(){
 	
+	
 	$(".alertDiv1").delay(2300).fadeOut();
 
 	$("#AddBike").click(function(){
 		$("#target_form1").submit();
 	});
 	$("form.postCreate").on('submit',function(){
+            var that = $(this),
+            url = that.attr('action'),
+            method = that.attr('method'),
+            data = {};
+        that.find('[name]').each(function(index, value){
+        	var that = $(this),
+        	name = that.attr('name'),
+        	value = that.val();
+
+        data[name] = value;
+        });
+        
+      	$.ajax({
+          	type: method,
+            url: url,
+            data: data,
+            success: function(response) {
+            	if (response == "Wrong inputs") {
+            		$(".alertDiv1").show();
+            	 	$(".alertDiv1").text(response);
+            	 	$(".alertDiv1").delay(2300).fadeOut();
+            	}else if(response == "Success"){
+            		$(".alertDiv2").show();
+            	 	$(".alertDiv2").text(response);
+            	 	$(".alertDiv2").delay(2300).fadeOut();
+            	};
+            	 
+
+            }
+        });
+		// console.log(data);
+        return false;
+    });
+    $("form.postLogin").on('submit',function(){
             var that = $(this),
             url = that.attr('action'),
             method = that.attr('method'),
@@ -65,6 +100,39 @@ $(document).ready(function(){
 		$(".delete_group").prop('href','/forum/group/'+event.target.id+'/delete');
 	});
  
+ $("#notButt").on('click',function(e){
+    e.preventDefault();
+    // document.getElementById("notification_count").style.visibility='hidden';
+     $.ajax({type: "POST",
+            url: "{{URL::route('viewBikes')}}",
+            success: function(result){
+                alert(result);
+            },
+            // error: function (jqXHR, textStatus) {
+            //     //displayCallResults(jqXHR);
+            //     alert(textStatus);
+            // }
+    });
+return false;
+});
 
+});
+
+
+$("#notButt").mousedown(function(){
+		$("#notificationDiv").toggle();
+        var visible = $("#notifications").is(":visible");
+        if (!visible) {
+            // $("#notButt").css("color","blue");
+
+        }else{
+            $("#notButt").css("color","black");
+            // document.getElementById("notifications").style.visibility='hidden';
+            
+        };
+});
+
+$("#notButt").click(function(){
+    document.getElementById("notification_count").style.visibility='hidden';
 });
 

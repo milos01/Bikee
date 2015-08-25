@@ -5,8 +5,8 @@ class UserController extends BaseController{
 		$this->layout = null;
 		if(Request::ajax()){
 			$validate = Validator::make(Input::all(),array(
-				'username' => 'required|min:4',
-				'password' => 'required|min:3',
+				'usernameR' => 'required|min:4',
+				'passwordR' => 'required|min:3',
 				'rPassword' => 'required|same:password',
 				'email' => 'required',
 				'ImePrz' => 'required|min:4',
@@ -18,8 +18,8 @@ class UserController extends BaseController{
 		}
 		else{	
 			$user = new User();
-			$user->username = Input::get('username');
-			$user->password = Hash::make(Input::get('password'));
+			$user->username = Input::get('usernameR');
+			$user->password = Hash::make(Input::get('passwordR'));
 			$user->email = Input::get('email');
 			$user->ImePrz = Input::get('ImePrz');
 			$user->TipKor = Input::get('type');
@@ -42,7 +42,8 @@ class UserController extends BaseController{
 			'password'=>'required'
 		));
 		if ($validate->fails()){
-			return Redirect::route('home')->withErrors($validate)->withInput()->with('fail','Fill all fields, login again.');
+			return "Wrong inputs";
+			// return Redirect::route('home')->withErrors($validate)->withInput()->with('fail','Fill all fields, login again.');
 		}else{
 			$remember = (Input::has('remember'))?true : false;
 			$auth = Auth::attempt(array(
@@ -79,15 +80,16 @@ class UserController extends BaseController{
 		return Redirect::route('home');
 	}
 	public function userHome(){
+		$noti = Notifications::all();
 		$rented = Rent::all();
 		$bikesMarka =   Bike::distinct()->select('marka')->get();
 		$bikesTip =   Bike::distinct()->select('tip')->get();
 		if(Input::get('secret') == 111){
 			$bikes = $this->searchBike(0,0);
-			return View::make('layouts.user')->with('bikes',$bikes)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip)->with('rented',$rented);
+			return View::make('layouts.user')->with('noti',$noti)->with('bikes',$bikes)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip)->with('rented',$rented);
 		}
 		$bikes = Bike::all();
-		return View::make('layouts.user')->with('bikes',$bikes)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip)->with('rented',$rented);
+		return View::make('layouts.user')->with('noti',$noti)->with('bikes',$bikes)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip)->with('rented',$rented);
 	}
 	public function sortBikes($id){
 		if($id == 1){
@@ -143,5 +145,10 @@ class UserController extends BaseController{
 
 		}
 
+	}
+	public function viewBikes(){
+		if(Request::ajax()){
+		return "aloo";
+	}
 	}
 }
