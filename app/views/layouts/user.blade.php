@@ -52,20 +52,23 @@
 		</div>	
 	@endif
 </div>
-<div class="container"  id="notificationDiv" style="background-color:#ccc;display:none;position:absolute;border:1px solid gray;width:350px;height:200px;top:85px;right:120px;z-index:9999">
+<div class="container" id="notificationDiv" style="display:none;position:absolute;width:350px;top:85px;right:120px;z-index:9999;">
+<div class="container arrow"></div>
+<div class="container"   style="background-color:#fff;border-radius:2px;border:1px solid gray;width:350px;top:85px;right:120px;z-index:9999;border-bottom:none;">
 <?php
 	$count = 1;
 ?>
 @foreach($noti as $notification)
 	@if(Auth::user()->id == $notification->to)
-	<div class="container " id = "{{$notification->id}}"style="border-bottom:1px solid gray;width:200px">
-		Your {{$notification->bike}} bike was rented...
+	<div class="container notif" style="border-bottom:1px solid gray;width:348px;padding: 20px 20px;margin-left:-15px">
+		<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
 	</div>
 	<?php
 		$count += 1;
 	?> 
 	@endif
 @endforeach
+</div>
 </div>
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>
 @stop

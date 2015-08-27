@@ -4,7 +4,7 @@
 	@section('head')
 	<title>Sisms projekat</title>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="../../style.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 	@show
@@ -30,15 +30,10 @@
 	</div>	
 	@endif
 </div>
-	<div class = "alert alert-danger alertDiv1" style="top:80px;text-align:center;position:absolute;width:100%;border-radius:0px;display:none"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
+	<div class = "alert alert-danger alertDiv1" style="background-color:transparent;top:80px;text-align:left;position:absolute;width:100%;border-radius:0px;display:none"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
 	<div class = "alert alert-success alertDiv2" style="top:80px;text-align:center;position:absolute;width:100%;border-radius:0px;display:none"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
-
 @show
-@if(Session::has('success'))
-	<div class = "alert alert-success alertDiv" style="top:80px;text-align:center;position:absolute;width:100%;border-radius:0px;display:none"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{Session::get('success')}}</div>
-@elseif(Session::has('fail'))
-	<div class = "alert alert-danger alertDiv" style="top:80px;text-align:center;position:absolute;width:100%;border-radius:0px;"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> {{Session::get('fail')}}</div>
-@endif
+
 
 <div class = "container" style="width:950px;margin-top:-50px;">
 @section('content')

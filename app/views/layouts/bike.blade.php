@@ -22,6 +22,12 @@
 	@endif
 	</div>
 </div>
+<!-- <div class = "alert alert-danger alertDiv1" style="top:80px;text-align:center;position:fixed;width:100%;border-radius:0px;display:none;z-index:99999"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div> -->
+	<div class="alert alert-danger alertDiv1" style="left:46%;top:40%;text-align:center;position:fixed;width:200px;height:200px;display:none;z-index:99999;border-radius:10px;">
+		<div class = "container" style="margin-top:-15px;background-image: url('../../img/x.png');width:170px;height:170px;margin-left:-15px"></div>
+		<div class="text" style="margin-top:-15px;"></div>
+	</div>
+	<div class = "alert alert-success alertDiv2" style="top:80px;text-align:center;position:fixed;width:100%;border-radius:0px;display:none;z-index:99999"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
 @stop
 @section('content')
 	<ol class="breadcrumb">
@@ -88,11 +94,11 @@
 	<div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;margin-top:400px"></div>
 	<!-- Comment part -->
 	<div class="container pull-left" style="margin-top:40px;margin-left:-13px;width:830px;">
-	<form action="{{URL::route('postComment',array(Auth::user()->id,$bike->id))}}"method = "post">
-		<div class="form-group">
+	<form id="commentForm" class = "commentCreate" action="{{URL::route('postComment',array(Auth::user()->id,$bike->id))}}"method = "post">
+		<div class="form-group group">
 			<div class="input-group" style="width:660px;margin-bottom:-1px;">
 		  		<span class="input-group-addon glyphicon glyphicon-comment" id="sizing-addon2"></span>
-		 		<textarea class="form-control textHolder" style="margin-bottom:-2px;" name = "body"id = "body"></textarea>
+		 		<textarea class="form-control textHolder" style="margin-bottom:-2px;" name = "body"id = "bodyYo"></textarea>
 			</div>
 		</div>
 
@@ -104,7 +110,7 @@
 	</div>
 	<!-- End Comment part -->
 	<!-- Show Commetns -->
-	<div class="container" style="margin-top:50px;width:780px;margin-left:-15px">
+	<div class="container " id = "cont"style="margin-top:50px;width:780px;margin-left:-15px">
 	@foreach($comment as $comments)
 		@if($comments->to  == $bike->id)
 		<div class="panel panel-default">

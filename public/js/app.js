@@ -75,6 +75,46 @@ $(document).ready(function(){
 		// console.log(data);
         return false;
     });
+    $("form.commentCreate").on('submit',function(){
+            var that = $(this),
+            url = that.attr('action'),
+            method = that.attr('method'),
+            data = {};
+        that.find('[name]').each(function(index, value){
+            var that = $(this),
+            name = that.attr('name'),
+            value = that.val();
+
+        data[name] = value;
+        });
+        
+        $.ajax({
+            type: method,
+            url: url,
+            data: data,
+            success: function(response) {
+                if (response == "Wrong inputs") {
+                    $(".alertDiv1").show();
+                    $(".text").html('<b>Not enough arguments</b>');
+                    $(".alertDiv1").delay(2300).fadeOut();
+
+
+                }else if(response == "Comment added"){
+                    $(".alertDiv2").show();
+                    $(".text").text(response);
+                    $(".alertDiv2").delay(2300).fadeOut();
+                    $('#cont').load(document.URL +  ' #cont');
+                    document.getElementById("bodyYo").value = '';
+                };
+                
+            },
+            error: function(ad,asd){
+                alert("error");
+            }
+        });
+        // console.log(data);
+        return false;
+    });
 	$("#searchBike").click(function(){
 		$("#srcBike").submit();
 	});

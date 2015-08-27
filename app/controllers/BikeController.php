@@ -33,7 +33,7 @@ class BikeController extends BaseController{
 	public function showBike($id){
 		$bike = Bike::find($id);
 		$allBikes = Bike::where('nadlezni','=',Auth::user()->id)->get();
-		$comment = Comment::all();
+		$comment = DB::table('comments')->orderBy('created_at','desc')->get();
 		$users = User::all();
 		return View::make('layouts.bike')->with('bike',$bike)->with('comment',$comment)->with('users',$users)->with('allBikes',$allBikes);
 	}

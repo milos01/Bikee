@@ -48,3 +48,41 @@ background-size: cover;
 .onoffswitch-checkbox:checked + .onoffswitch-label:before {
     right: 0px; 
 }
+.notif:hover{
+    background-color: rgba(244, 244, 244, 1);
+    cursor: pointer;
+}
+/*.arrow {
+    margin-left: 15px;
+    width: 200px;
+    background: #FFFFFF;
+    border: 1px solid #CAD5E0;
+    padding: 4px;
+    position: relative;
+    min-height: 200px;
+}*/
+
+.arrow:after {
+content: '';
+display: block;
+position: absolute;
+left: 218px;
+top:-19px;
+width: 0;
+height: 0;
+border-color: transparent transparent #fff transparent ;
+border-style: solid;
+border-width: 10px;
+}
+.arrow:before {
+content: '';
+display: block;
+position: absolute;
+top:-21px;
+left: 217px;
+width: 0;
+height: 0;
+border-color:  transparent transparent black transparent ;
+border-style: solid;
+border-width: 11px;
+}
