@@ -17,7 +17,7 @@
 	@if(Auth::check())
 		
 		<div id = "kaj"class="pull-right" style="margin-top:40px;width:250px;height:50px;">
-		<div class="pull-left" id="notButt" style="cursor:pointer;font-size:18px;padding:0px 0px;width:18px;margin-right:10px;">
+		<div class="pull-left" id="notButt1" style="cursor:pointer;font-size:18px;padding:0px 0px;width:18px;margin-right:10px;">
 			<span class="glyphicon glyphicon-globe" aria-hidden="true" style="margin-top:4px;"></span>
 		</div>
 		<?php
@@ -71,19 +71,24 @@
 				<?php
 					$count += 1;
 				?>
-		@else
+		@elseif($notification->type == 1)
 			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
 				<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
 			</div>
 			<?php
 				$count += 1;
 			?>
+		@else
+		<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px;text-align:center;">
+			<b>{{Auth::user()->username}}</b> welcome to <b>Bikee</b>
+		</div>
+		<?php
+				$count += 1;
+			?>
 		@endif
 	@endif
 @endforeach
-<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px;text-align:center;">
-	<b>{{Auth::user()->username}}</b> welcome to <b>Bikee</b>
-</div>
+
 </div>
 </div>
 <!-- <div class = "alert alert-danger alertDiv1" style="top:80px;text-align:center;position:fixed;width:100%;border-radius:0px;display:none;z-index:99999"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div> -->

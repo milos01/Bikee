@@ -70,19 +70,33 @@
 				<?php
 					$count += 1;
 				?>
-		@else
+		@elseif($notification->type == 1)
 			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
 				<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
 			</div>
 			<?php
 				$count += 1;
 			?>
+		@elseif($notification->type == 2)
+		<a href="{{URL::route('showBike',$notification->bike)}}" style="color:black;">
+			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
+				<b>{{User::find($notification->from)->ImePrz}}</b> also commented on <b>{{Bike::find($notification->bike)->ime}}</b>
+			</div>
+		</a>
+			<?php
+				$count += 1;
+			?>
+		@else
+		<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px;text-align:center;">
+			<b>{{Auth::user()->username}}</b> welcome to <b>Bikee</b>
+		</div>
+		<?php
+				$count += 1;
+			?>
 		@endif
 	@endif
 @endforeach
-<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px;text-align:center;">
-	<b>{{Auth::user()->username}}</b> welcome to <b>Bikee</b>
-</div>
+
 </div>
 </div>
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>

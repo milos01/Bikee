@@ -93,6 +93,7 @@ $(document).ready(function(){
             url: url,
             data: data,
             success: function(response) {
+                alert(JSON.stringify(response));
                 if (response == "Wrong inputs") {
                     $(".alertDiv1").show();
                     $(".text").html('<b>Not enough arguments</b>');
