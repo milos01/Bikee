@@ -16,6 +16,7 @@ class RentController extends BaseController{
 			$noti->to = $nadlezni;
 			$noti->bike = $id;
 			$noti->read = 0;
+			$noti->type = 1;
 
 			$bike = Bike::find($id);
 			$bike->status = 1;

@@ -15,15 +15,15 @@
 	
 	@if(Auth::check())
 		
-		<div class="pull-right" style="margin-top:40px;width:250px;height:50px;">
-		<div class="pull-left" id="notButt" style="cursor:pointer;font-size:18px;padding:0px 0px;width:18px;margin-right:10px;">
+		<div id = "kaj"class="pull-right" style="margin-top:40px;width:250px;height:50px;">
+		<div class="pull-left" id="notButt1" style="cursor:pointer;font-size:18px;padding:0px 0px;width:18px;margin-right:10px;">
 			<span class="glyphicon glyphicon-globe" aria-hidden="true" style="margin-top:4px;"></span>
 		</div>
 		<?php
 			$counter = 0;
 		?>
 		@foreach($noti as $notification)
-			@if(Auth::user()->id == $notification->to)
+			@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
 				@if($notification->read == 0)
 					<?php $counter += 1; ?>
 				@endif
@@ -54,18 +54,29 @@
 </div>
 <div class="container" id="notificationDiv" style="display:none;position:absolute;width:350px;top:85px;right:120px;z-index:9999;">
 <div class="container arrow"></div>
-<div class="container"   style="background-color:#fff;border-radius:2px;border:1px solid gray;width:350px;top:85px;right:120px;z-index:9999;border-bottom:none;">
+<div class="container"   style="overflow-y:auto;background-color:#fff;border-radius:2px;border:1px solid gray;width:360px;height:250px;top:85px;right:120px;z-index:9999;">
 <?php
 	$count = 1;
 ?>
 @foreach($noti as $notification)
-	@if(Auth::user()->id == $notification->to)
-	<div class="container notif" style="border-bottom:1px solid gray;width:348px;padding: 20px 20px;margin-left:-15px">
-		<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
-	</div>
-	<?php
-		$count += 1;
-	?> 
+	@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
+		@if($notification->type == 0)
+			<a href="{{URL::route('showBike',$notification->bike)}}" style="color:black;">
+				<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px">
+					<b>{{User::find($notification->from)->ImePrz}}</b> commented on <b>{{Bike::find($notification->bike)->ime}}</b>
+				</div>
+			</a>	
+				<?php
+					$count += 1;
+				?>
+		@else
+			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
+				<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
+			</div>
+			<?php
+				$count += 1;
+			?>
+		@endif
 	@endif
 @endforeach
 </div>
@@ -226,16 +237,16 @@
 	    <span class="caret"></span>
 	  </button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-	  	<li><a href="{{URL::route('searchBike',array(0,10))}}">No filter</a></li>
-	    <li><a href="{{URL::route('searchBike',array(1,10))}}">Available</a></li>
-	    <li><a href="{{URL::route('searchBike',array(2,10))}}">Not available</a></li>
-	    <li><a href="{{URL::route('searchBike',array(3,10))}}">Sold</a></li>
-	    <li><a href="{{URL::route('searchBike',array(4,10))}}"><span class="glyphicon glyphicon-sort-by-order" aria-hidden="true"></span> Rating</a></li>
-	    <li><a href="{{URL::route('searchBike',array(5,10))}}"><span class="glyphicon glyphicon-sort-by-order-alt" aria-hidden="true"></span> Rating</a></li>
+	  	<li class="no-filter"><a href="{{URL::route('searchBike',array(0,10))}}">No filter</a></li>
+	    <li class="available"><a href="{{URL::route('searchBike',array(1,10))}}">Available</a></li>
+	    <li class="not-available"><a href="{{URL::route('searchBike',array(2,10))}}">Not available</a></li>
+	    <li class="sold"><a href="{{URL::route('searchBike',array(3,10))}}">Sold</a></li>
+	    <li class="rating"><a href="{{URL::route('searchBike',array(4,10))}}"><span class="glyphicon glyphicon-sort-by-order" aria-hidden="true"></span> Rating</a></li>
+	    <li class="rating-up"><a href="{{URL::route('searchBike',array(5,10))}}"><span class="glyphicon glyphicon-sort-by-order-alt" aria-hidden="true"></span> Rating</a></li>
 	  </ul>
 	</div>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" id="svi">
   <ul class="media-list">
   @if(Auth::user()->TipKor == 'renter')
 	  @foreach($bikes as $bike)

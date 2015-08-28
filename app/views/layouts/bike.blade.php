@@ -9,89 +9,153 @@
 @section('image')
 @stop
 @section('lol')
+<?php $noti = Notifications::all()?>
 <div class = "navbar navbar-default">
 <div class = "container pull-left" style="padding:25px;font-family: 'Lobster';font-size:50px;"><a href="{{URL::route('userHome')}}" style="text-decoration:none;color:rgba(64, 62, 59, 1);">Bikee</a></div>	
-	<div class="container pull-right" style="margin-top:40px;width:200px;">
+	
 	@if(Auth::check())
+		
+		<div id = "kaj"class="pull-right" style="margin-top:40px;width:250px;height:50px;">
+		<div class="pull-left" id="notButt" style="cursor:pointer;font-size:18px;padding:0px 0px;width:18px;margin-right:10px;">
+			<span class="glyphicon glyphicon-globe" aria-hidden="true" style="margin-top:4px;"></span>
+		</div>
+		<?php
+			$counter = 0;
+		?>
+		@foreach($noti as $notification)
+			@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
+				@if($notification->read == 0)
+					<?php $counter += 1; ?>
+				@endif
+			@endif
+		@endforeach
+		@if($counter >= 1)
+		<span id="notification_count" style="
+			padding: 3px 7px 3px 7px;
+			background: #cc0000;
+			color: #ffffff;
+			font-weight: bold;
+			margin-left: -18px;
+			border-radius: 9px;
+			-moz-border-radius: 9px; 
+			-webkit-border-radius: 9px;
+			 position: absolute;
+			 margin-top: -11px;
+			 font-size: 11px;">{{$counter}}</span>
+ 		@endif
 		{{Auth::user()->ImePrz}}
 		<a href="{{URL::route('getLogout')}}">
 			<button type="button" class="btn btn-default" aria-label="Left Align">
 				Logout
 			</button>
-		</a>	
+		</a>
+		</div>	
 	@endif
-	</div>
+</div>
+<div class="container" id="notificationDiv" style="display:none;position:absolute;width:350px;top:85px;right:120px;z-index:9999;">
+<div class="container arrow"></div>
+<div class="container"   style="background-color:#fff;border-radius:2px;border:1px solid gray;width:350px;top:85px;right:120px;z-index:9999;border-bottom:none;">
+<?php
+	$count = 1;
+?>
+@foreach($noti as $notification)
+	@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
+		@if($notification->type == 0)
+			<div class="container notif" style="border-bottom:1px solid gray;width:348px;padding: 20px 20px;margin-left:-15px">
+				<b>{{User::find($notification->from)->ImePrz}}</b> commented on <b>{{Bike::find($notification->bike)->ime}}</b>
+			</div>
+			<?php
+				$count += 1;
+			?>
+		@else
+			<div class="container notif" style="border-bottom:1px solid gray;width:348px;padding: 20px 20px;margin-left:-15px">
+				<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
+			</div>
+			<?php
+				$count += 1;
+			?>
+		@endif
+	@endif
+	
+@endforeach
+</div>
 </div>
 <!-- <div class = "alert alert-danger alertDiv1" style="top:80px;text-align:center;position:fixed;width:100%;border-radius:0px;display:none;z-index:99999"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div> -->
 	<div class="alert alert-danger alertDiv1" style="left:46%;top:40%;text-align:center;position:fixed;width:200px;height:200px;display:none;z-index:99999;border-radius:10px;">
 		<div class = "container" style="margin-top:-15px;background-image: url('../../img/x.png');width:170px;height:170px;margin-left:-15px"></div>
 		<div class="text" style="margin-top:-15px;"></div>
 	</div>
-	<div class = "alert alert-success alertDiv2" style="top:80px;text-align:center;position:fixed;width:100%;border-radius:0px;display:none;z-index:99999"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
+	<div class="alert alert-success alertDiv2" style="left:46%;top:40%;text-align:center;position:fixed;width:200px;height:200px;display:none;z-index:99999;border-radius:10px;">
+		<div class = "container" style="margin-top:-15px;background-image: url('../../img/y.png');width:170px;height:170px;margin-left:-15px"></div>
+		<div class="text2" style="margin-top:-15px;"></div>
+	</div>
 @stop
 @section('content')
 	<ol class="breadcrumb">
   		<li><a href="{{URL::route('userHome')}}">Home</a></li>
   		<li class="active">{{$bike->ime}}</li>
 	</ol>
-	<img class="media-object pull-left" src="{{$bike->pic}}" style="max-width:300px;">
+	
 	<div class="container" style="width:800px;">
-	<div class="container pull-right" style="width:200px;height:50px;margin-top:50px">
-		@if(Auth::user()->TipKor == 'kupac')
-		<div class="dropdown">
-  			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-	    		Rate bike
-	    		<span class="caret"></span>
-  			</button>
-			  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-			    <li><a href="{{URL::route('rateBike',array($bike->id,1))}}">1</a></li>
-			    <li><a href="{{URL::route('rateBike',array($bike->id,2))}}">2</a></li>
-			    <li><a href="{{URL::route('rateBike',array($bike->id,3))}}">3</a></li>
-			    <li><a href="{{URL::route('rateBike',array($bike->id,4))}}">4</a></li>
-			    <li><a href="{{URL::route('rateBike',array($bike->id,5))}}">5</a></li>
-			  </ul>
-		</div>
-		@else
-		<p style="font-family:'Lobster';font-size:20px">You  own this bike!</p>
-		<p style="font-family:'Lobster';font-size:20px">Bike rate: {{$bike->ocena}}</p>
-		<p style="font-family:'Lobster';font-size:20px">Status:
-		@if($bike->status == 0)
-			<span style="color:green">available</span>
-		@else
-			<span style="color:red">not available</span>
-		@endif
-		</p>
-		@if($bike->prodat == 1)
-			<p style="font-family:'Lobster';font-size:20px">Sold status: <span style="color:red">Sold</span></p>
-		@endif
-
-		@endif
-		@if(Auth::user()->TipKor == 'kupac')
-		<!-- Rent Bike -->
-		<span class="badge pull-right" style="margin-top:-25px;margin-right:25px;">{{$bike->ocena}}</span>
-		@foreach($users as $user)
-			@if($user->id == $bike->nadlezni)
-				<p style="font-family:'Lobster';font-size:20px;margin-top:10px">Renter: {{$user->ImePrz}}</p>
+	<div class="container" style="width:100%;height:300px;">
+		<img class="media-object pull-left" src="{{$bike->pic}}" style="max-width:300px;">
+		<div class="container pull-right" style="width:200px;height:50px;margin-top:50px;">
+			@if(Auth::user()->TipKor == 'kupac')
+			<div class="dropdown">
+	  			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		    		Rate bike
+		    		<span class="caret"></span>
+	  			</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				    <li><a href="{{URL::route('rateBike',array($bike->id,1))}}">1</a></li>
+				    <li><a href="{{URL::route('rateBike',array($bike->id,2))}}">2</a></li>
+				    <li><a href="{{URL::route('rateBike',array($bike->id,3))}}">3</a></li>
+				    <li><a href="{{URL::route('rateBike',array($bike->id,4))}}">4</a></li>
+				    <li><a href="{{URL::route('rateBike',array($bike->id,5))}}">5</a></li>
+				  </ul>
+			</div>
+			@else
+			<p style="font-family:'Lobster';font-size:20px">You  own this bike!</p>
+			<p style="font-family:'Lobster';font-size:20px">Bike rate: {{$bike->ocena}}</p>
+			<p style="font-family:'Lobster';font-size:20px">Status:
+			@if($bike->status == 0  && $bike->prodat == 0)
+				<span style="color:green">available</span>
+			@elseif($bike->status == 0  && $bike->prodat == 1)
+				<span style="color:red">not available(sold)</span>
+			@elseif($bike->status == 1  && $bike->prodat == 1)
+				<span style="color:red">not available(sold)</span>
+			@else
+				<span style="color:red">not available</span>
 			@endif
-		@endforeach
-		@if($bike->status == 0)
-		<p style="font-family:'Lobster';font-size:20px;margin-top:10px;color:green">available</p>
-		<a  href="#" data-target = "#rent_bike" data-toggle= "modal" class="btn btn-success" style="padding:10px 25px;margin-top:50px;margin-left:20px"><span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Rent bike</a>
-		@else
+			@endif
+			</p>
+			@if(Auth::user()->TipKor == 'kupac')
+			<!-- Rent Bike -->
+			<span class="badge pull-right" style="margin-top:-25px;margin-right:25px;">{{$bike->ocena}}</span>
+			@foreach($users as $user)
+				@if($user->id == $bike->nadlezni)
+					<p style="font-family:'Lobster';font-size:20px;margin-top:10px">Renter: {{$user->ImePrz}}</p>
+				@endif
+			@endforeach
+			@if($bike->status == 0 && $bike->prodat == 0)
+			<p style="font-family:'Lobster';font-size:20px;margin-top:10px;color:green">available</p>
+			<a  href="#" data-target = "#rent_bike" data-toggle= "modal" class="btn btn-success" style="padding:10px 25px;margin-top:10px;margin-left:0px"><span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span> Rent bike</a>
+			@else
 
-			<p style="font-family:'Lobster';font-size:20px;margin-top:10px;color:red;">Not available</p>
-		@endif
-		<!-- End Rate Bike -->
-		@endif
+				<p style="font-family:'Lobster';font-size:20px;margin-top:10px;color:red;">Not available</p>
+			@endif
+			<!-- End Rate Bike -->
+			@endif
+		</div>
 	</div>
 	<div class="pull-left" style="margin-top:50px;">
 		<p style="font-family:'Lobster';font-size:20px">Description</p>
 		Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
 	</div>
 	<div class="container pull-left" style="margin-top:30px;margin-left:-15px;">
-	<p style="font-family:'Lobster';font-size:20px">Bike position:</p>
+		<p style="font-family:'Lobster';font-size:20px">Bike position:</p>
 	</div>
-	<div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;margin-top:400px"></div>
+	<div id="map_canvas" style="width:750px;height:300px;border:1px solid #ccc;margin-top:40px"></div>
 	<!-- Comment part -->
 	<div class="container pull-left" style="margin-top:40px;margin-left:-13px;width:830px;">
 	<form id="commentForm" class = "commentCreate" action="{{URL::route('postComment',array(Auth::user()->id,$bike->id))}}"method = "post">

@@ -140,8 +140,12 @@ class UserController extends BaseController{
 			$rented = Rent::all();
 			$bikesMarka =   Bike::distinct()->select('marka')->get();
 			$bikesTip =   Bike::distinct()->select('tip')->get();
+		 	
 		 	$bikes = $this->sortBikes($tip);
-		 	return View::make('layouts.user')->with('bikes',$bikes)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip)->with('rented',$rented);
+		 	return $bikes;
+
+		 	// return View::make('layouts.user')->with('bikes',$bikes)->with('bikesMarka',$bikesMarka)->with('bikesTip',$bikesTip)->with('rented',$rented);
+
 
 		}
 

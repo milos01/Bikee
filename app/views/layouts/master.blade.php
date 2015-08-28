@@ -35,7 +35,7 @@
 @show
 
 
-<div class = "container" style="width:950px;margin-top:-50px;">
+<div class = "container" style="width:950px;">
 @section('content')
 <!-- Login modal -->
 <div class="container" style="height:400px;width:800px;">

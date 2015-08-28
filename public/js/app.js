@@ -101,9 +101,10 @@ $(document).ready(function(){
 
                 }else if(response == "Comment added"){
                     $(".alertDiv2").show();
-                    $(".text").text(response);
+                    $(".text2").html('<b>Comment added</b>');
                     $(".alertDiv2").delay(2300).fadeOut();
                     $('#cont').load(document.URL +  ' #cont');
+                    $('#notification_count').load(document.URL +  ' #notification_count');
                     document.getElementById("bodyYo").value = '';
                 };
                 
@@ -114,6 +115,20 @@ $(document).ready(function(){
         });
         // console.log(data);
         return false;
+    });
+    $("li.available").on("click",function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "get",
+            url: "user/search/1/10",
+            success:function(data){
+                alert(data);
+                  // the HTML content your controller has produced 
+                  
+                window.location.reload();
+            }
+            
+        });
     });
 	$("#searchBike").click(function(){
 		$("#srcBike").submit();
@@ -147,7 +162,19 @@ $(document).ready(function(){
 
     $.ajax({
             type: "post",
-            url: "user/bike/view",
+            url: "../view",
+            
+        });
+
+});
+ $("#notButt1").on('click',function(e){
+    e.preventDefault();
+    var root_url = "<?php URL::route('viewBikes') ?>";
+
+
+    $.ajax({
+            type: "post",
+            url: "../user/view",
             
         });
 
@@ -172,4 +199,19 @@ $("#notButt").mousedown(function(){
 $("#notButt").click(function(){
     document.getElementById("notification_count").style.visibility='hidden';
 });
+$("#notButt1").mousedown(function(){
+        $("#notificationDiv").toggle();
+        var visible = $("#notifications").is(":visible");
+        if (!visible) {
+            // $("#notButt").css("color","blue");
 
+        }else{
+            $("#notButt1").css("color","black");
+            // document.getElementById("notifications").style.visibility='hidden';
+            
+        };
+});
+
+$("#notButt1").click(function(){
+    document.getElementById("notification_count").style.visibility='hidden';
+});
