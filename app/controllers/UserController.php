@@ -80,7 +80,7 @@ class UserController extends BaseController{
 		return Redirect::route('home');
 	}
 	public function userHome(){
-		$noti = Notifications::all();
+		$noti = DB::table('notifications')->orderBy('created_at','desc')->get();
 		$rented = Rent::all();
 		$bikesMarka =   Bike::distinct()->select('marka')->get();
 		$bikesTip =   Bike::distinct()->select('tip')->get();

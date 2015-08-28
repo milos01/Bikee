@@ -9,7 +9,8 @@
 @section('image')
 @stop
 @section('lol')
-<?php $noti = Notifications::all()?>
+<?php $noti = DB::table('notifications')->orderBy('created_at','desc')->get()?>
+
 <div class = "navbar navbar-default">
 <div class = "container pull-left" style="padding:25px;font-family: 'Lobster';font-size:50px;"><a href="{{URL::route('userHome')}}" style="text-decoration:none;color:rgba(64, 62, 59, 1);">Bikee</a></div>	
 	
@@ -54,21 +55,24 @@
 </div>
 <div class="container" id="notificationDiv" style="display:none;position:absolute;width:350px;top:85px;right:120px;z-index:9999;">
 <div class="container arrow"></div>
-<div class="container"   style="background-color:#fff;border-radius:2px;border:1px solid gray;width:350px;top:85px;right:120px;z-index:9999;border-bottom:none;">
+<div class="container"   style="overflow-y:auto;background-color:#fff;border-radius:2px;border:1px solid gray;width:360px;height:250px;top:85px;right:120px;z-index:9999;">
 <?php
 	$count = 1;
 ?>
+
 @foreach($noti as $notification)
 	@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
 		@if($notification->type == 0)
-			<div class="container notif" style="border-bottom:1px solid gray;width:348px;padding: 20px 20px;margin-left:-15px">
-				<b>{{User::find($notification->from)->ImePrz}}</b> commented on <b>{{Bike::find($notification->bike)->ime}}</b>
-			</div>
-			<?php
-				$count += 1;
-			?>
+			<a href="{{URL::route('showBike',$notification->bike)}}" style="color:black;">
+				<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px">
+					<b>{{User::find($notification->from)->ImePrz}}</b> commented on <b>{{Bike::find($notification->bike)->ime}}</b>
+				</div>
+			</a>	
+				<?php
+					$count += 1;
+				?>
 		@else
-			<div class="container notif" style="border-bottom:1px solid gray;width:348px;padding: 20px 20px;margin-left:-15px">
+			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
 				<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
 			</div>
 			<?php
@@ -76,8 +80,10 @@
 			?>
 		@endif
 	@endif
-	
 @endforeach
+<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px;text-align:center;">
+	<b>{{Auth::user()->username}}</b> welcome to <b>Bikee</b>
+</div>
 </div>
 </div>
 <!-- <div class = "alert alert-danger alertDiv1" style="top:80px;text-align:center;position:fixed;width:100%;border-radius:0px;display:none;z-index:99999"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div> -->
@@ -131,7 +137,7 @@
 			</p>
 			@if(Auth::user()->TipKor == 'kupac')
 			<!-- Rent Bike -->
-			<span class="badge pull-right" style="margin-top:-25px;margin-right:25px;">{{$bike->ocena}}</span>
+			<span class="badge pull-right" style="margin-top:-37px;margin-right:25px;">{{$bike->ocena}}</span>
 			@foreach($users as $user)
 				@if($user->id == $bike->nadlezni)
 					<p style="font-family:'Lobster';font-size:20px;margin-top:10px">Renter: {{$user->ImePrz}}</p>

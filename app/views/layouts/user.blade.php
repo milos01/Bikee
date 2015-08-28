@@ -58,6 +58,7 @@
 <?php
 	$count = 1;
 ?>
+
 @foreach($noti as $notification)
 	@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
 		@if($notification->type == 0)
@@ -79,6 +80,9 @@
 		@endif
 	@endif
 @endforeach
+<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px;text-align:center;">
+	<b>{{Auth::user()->username}}</b> welcome to <b>Bikee</b>
+</div>
 </div>
 </div>
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>
