@@ -93,20 +93,26 @@ $(document).ready(function(){
             url: url,
             data: data,
             success: function(response) {
-                alert(JSON.stringify(response));
                 if (response == "Wrong inputs") {
                     $(".alertDiv1").show();
                     $(".text").html('<b>Not enough arguments</b>');
                     $(".alertDiv1").delay(2300).fadeOut();
+                    
+
+
 
 
                 }else if(response == "Comment added"){
                     $(".alertDiv2").show();
                     $(".text2").html('<b>Comment added</b>');
                     $(".alertDiv2").delay(2300).fadeOut();
+                    $('html, body').animate({
+                         scrollTop: $("#cont").offset().top
+                    }, 2000);
                     $('#cont').load(document.URL +  ' #cont');
                     $('#notification_count').load(document.URL +  ' #notification_count');
                     document.getElementById("bodyYo").value = '';
+
                 };
                 
             },
