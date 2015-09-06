@@ -185,7 +185,7 @@
 	</div>
 	<!-- End Comment part -->
 	<!-- Show Commetns -->
-	<div class="container " id = "cont"style="margin-top:50px;width:780px;margin-left:-15px">
+	<div class="container " id = "conti"style="margin-top:50px;width:780px;margin-left:-15px">
 	@foreach($comment as $comments)
 		@if($comments->to  == $bike->id)
 		<div class="panel panel-default">
