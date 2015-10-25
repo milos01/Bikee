@@ -1,8 +1,7 @@
 
 $(document).ready(function(){
 	
-	
-	$(".alertDiv1").delay(2300).fadeOut();
+	$(".alertDiv").delay(2300).fadeOut();
 
 	$("#AddBike").click(function(){
 		$("#target_form1").submit();
@@ -26,13 +25,12 @@ $(document).ready(function(){
             data: data,
             success: function(response) {
             	if (response == "Wrong inputs") {
-            		$(".alertDiv1").show();
-            	 	$(".alertDiv1").text(response);
-            	 	$(".alertDiv1").delay(2300).fadeOut();
+            		$(".alertDiv11").show();
+            	 	$(".alertDiv11").delay(1000).fadeOut();
             	}else if(response == "Success"){
-            		$(".alertDiv2").show();
-            	 	$(".alertDiv2").text(response);
-            	 	$(".alertDiv2").delay(2300).fadeOut();
+            		$(".alertDiv22").show();
+            	 	$(".alertDiv22").text(response);
+            	 	$(".alertDiv22").delay(1000).fadeOut();
             	};
             	 
 
@@ -59,14 +57,12 @@ $(document).ready(function(){
             url: url,
             data: data,
             success: function(response) {
-            	if (response == "Wrong inputs") {
-            		$(".alertDiv1").show();
-            	 	$(".alertDiv1").text(response);
-            	 	$(".alertDiv1").delay(2300).fadeOut();
-            	}else if(response == "Success"){
-            		$(".alertDiv2").show();
-            	 	$(".alertDiv2").text(response);
-            	 	$(".alertDiv2").delay(2300).fadeOut();
+            	if (response == "Wrong inputs" || response == "User does not exists") {
+                    $(".alertDiv11").show();
+                    // $(".alertDiv11").text(response);
+                    $(".alertDiv11").delay(1000).fadeOut();
+            	}else{
+                    $("body").html(response); 
             	};
             	 
 
@@ -96,20 +92,19 @@ $(document).ready(function(){
                 if (response == "Wrong inputs") {
                     $(".alertDiv1").show();
                     $(".text").html('<b>Not enough arguments</b>');
-                    $(".alertDiv1").delay(2300).fadeOut();
+                    $(".alertDiv1").delay(1000).fadeOut();
                     
-
 
 
 
                 }else if(response == "Comment added"){
                     $(".alertDiv2").show();
                     $(".text2").html('<b>Comment added</b>');
-                    $(".alertDiv2").delay(2300).fadeOut();
+                    $(".alertDiv2").delay(1000).fadeOut();
                     $('html, body').animate({
-                         scrollTop: $("#cont").offset().top
+                         scrollTop: $("#conti").offset().top
                     }, 2000);
-                    $('#cont').load(document.URL +  ' #cont');
+                    $('#conti').load(document.URL +  ' #conti');
                     $('#notification_count').load(document.URL +  ' #notification_count');
                     document.getElementById("bodyYo").value = '';
 

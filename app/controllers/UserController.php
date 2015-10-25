@@ -2,7 +2,6 @@
 
 class UserController extends BaseController{
 	public function postCreate(){
-		$this->layout = null;
 		if(Request::ajax()){
 			$validate = Validator::make(Input::all(),array(
 				'usernameR' => 'required|min:4',
@@ -14,7 +13,6 @@ class UserController extends BaseController{
 			));
 		if ($validate->fails()) {
 			return "Wrong inputs";
-			// return Redirect::route('home')->with('success','You registered successfully');
 		}
 		else{	
 			$user = new User();
@@ -37,29 +35,30 @@ class UserController extends BaseController{
 		}
 	}
 	public function postLogin(){
-		$validate = Validator::make(Input::all(),array(
-			'username'=>'required',
-			'password'=>'required'
-		));
-		if ($validate->fails()){
-			return "Wrong inputs";
-			// return Redirect::route('home')->withErrors($validate)->withInput()->with('fail','Fill all fields, login again.');
-		}else{
-			$remember = (Input::has('remember'))?true : false;
-			$auth = Auth::attempt(array(
-					'username'=> Input::get('username'),
-					'password'=> Input::get('password')
-				),$remember);
-			if($auth){
-				//ako je loginov
-				
-				return Redirect::route('userHome');
+		$this->layout = null;
+		if(Request::ajax()){
+			$validate = Validator::make(Input::all(),array(
+				'username'=>'required',
+				'password'=>'required'
+			));
+			if ($validate->fails()){
+				return "Wrong inputs";
+				// return Redirect::route('home')->withErrors($validate)->withInput()->with('fail','Fill all fields, login again.');
 			}else{
-				//ake nije uspesno logovan
-				return Redirect::route('home')->with('fail', 'Something wrong with input elements.');
+				$remember = (Input::has('remember'))?true : false;
+				$auth = Auth::attempt(array(
+						'username'=> Input::get('username'),
+						'password'=> Input::get('password')
+					),$remember);
+				if($auth){
+					//ako je loginov
+					return Redirect::route('userHome');
+				}else{
+					//ake nije uspesno logovan
+					return "User does not exists";
+				}
 			}
 		}
-	
 	}
 	public function userHomeMain($id){
 		$user = User::find($id);

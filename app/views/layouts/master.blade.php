@@ -30,13 +30,20 @@
 	</div>	
 	@endif
 </div>
-	<div class = "alert alert-danger alertDiv1" style="background-color:transparent;top:80px;text-align:left;position:absolute;width:100%;border-radius:0px;display:none"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
-	<div class = "alert alert-success alertDiv2" style="top:80px;text-align:center;position:absolute;width:100%;border-radius:0px;display:none"><span class="glyphicon glyphicon-ok-circle bla" aria-hidden="true"></span> {{Session::get('success')}}</div>
+	
 @show
 
-
+<div class="alert alert-danger alertDiv11" style="left:46%;top:40%;text-align:center;position:fixed;width:200px;height:200px;display:none;z-index:99999;border-radius:10px;">
+		<div class = "container" style="z-index:99999;margin-top:-15px;background-image: url('../../img/x.png');width:170px;height:170px;margin-left:-15px;"></div>
+		<div class="text" style="margin-top:-15px;">Worng inputs</div>
+	</div>
+	<div class="alert alert-success alertDiv22" style="left:46%;top:40%;text-align:center;position:fixed;width:200px;height:200px;display:none;z-index:99999;border-radius:10px;">
+		<div class = "container" style="margin-top:-15px;background-image: url('../../img/y.png');width:170px;height:170px;margin-left:-15px"></div>
+		<div class="text2" style="margin-top:-15px;"></div>
+	</div>
 <div class = "container" style="width:950px;">
 @section('content')
+
 <!-- Login modal -->
 <div class="container" style="height:400px;width:800px;">
 	<div class = "modal-dialog pull-left" style="width:300px; height:500px">
@@ -45,7 +52,7 @@
 				<h4 class="modal-title">Login</h4>
 			</div>
 			<div class="modal-body">
-				<form id = "target_form1" method= "post"action= "{{URL::route('postLogin')}}">
+				<form id="loginForm" class = "postLogin" method="post"action= "{{URL::route('postLogin')}}">
 					<div class="" style="margin-bottom:10px">
 						<input id="username" name="username" type="text"class="form-control"placeholder="Username">
 						<!-- @if($errors->has('username'))
@@ -61,13 +68,13 @@
 					</div>
 					<div class = "check/box">
 						<label for = "remember">
-							<input type ="checkbox" name = "remember" id="remember">
+							<input type ="checkbox"  id="remember">
 							Remember me
 						</label>
 					</div>
 
 					<div class="modal-footer">
-						<button type="submit"class = "btn btn-primary"data-dismiss = "modal" id = "formSub" onclick="location()">Login</button>
+						<button type="submit"class = "btn btn-primary"data-dismiss = "modal" id = "formSub">Login</button>
 					</div>
 					{{Form::token()}} 
 				</form>
@@ -86,54 +93,36 @@
 				<div class="modal-body">
 				<form id="registerForm" class = "postCreate" method="post" action="{{URL::route('postCreate')}}">
 						<div class="">
-							<input id="username" name="username" type="text"class="form-control" placeholder="Username" >
+							<input id="usernameR" name="usernameR" type="text"class="form-control" placeholder="Username" >
 								
-							@if($errors->has('username'))
-								{{$errors->first('username')}}
-							@else
-								<?php 
-								echo Input::get('username');
-								?>
-							@endif
+						
 						</div>
 
 						<div class="">
-							<input style = "margin-top:10px;" id="password" name="password" type="password"class="form-control" placeholder="Password">
-							@if($errors->has('password'))
-								{{$errors->first('password')}}
-							@endif
+							<input style = "margin-top:10px;" id="passwordR" name="passwordR" type="password"class="form-control" placeholder="Password">
+							
 						</div>
 						<div class="">
 							<input style = "margin-top:10px;margin-bottom:10px;" id="rPassword" name="rPassword" type="password"class="form-control" placeholder="Re-Password">
-							@if($errors->has('rPassword'))
-								{{$errors->first('rPassword')}}
-							@endif
+							
 						</div>	
 						<div class="">
 							<input style = "margin-top:10px;margin-bottom:10px;" id="email" name="email" type="text"class="form-control" placeholder="Email">
-							@if($errors->has('email'))
-								{{$errors->first('email')}}
-							@endif
+							
 						</div>
 						<div class="">
 							<input style = "margin-top:10px;margin-bottom:10px;" id="ImePrz" name="ImePrz" type="text"class="form-control" placeholder="Full Name">
-							@if($errors->has('ImePrz'))
-								{{$errors->first('ImePrz')}}
-							@endif
+							
 						</div>
 						<input class ="btn btn pull-right" type="button" id="botton" value="Browse" onclick="HandleBrowseClick();">
 						<div class="input-group" style = "margin-bottom:10px;width:280px;">
  							<input class="form-control " type="file" id="browse" style="display: none" onChange="Handlechange();"/>
 							<input class="form-control "type="text" id="filename" id="slika" name="slika" placeholder = "Picture url"/>
-							@if($errors->has('slika'))
-								{{$errors->first('slika')}}
-							@endif
+							
 						</div>
 						<div class="">
 							<input style = "margin-top:10px;margin-bottom:10px;display:none;" id="city" name="city" type="text"class="form-control" placeholder="City">
-							<!-- @if($errors->has('rPassword'))
-								{{$errors->first('rPassword')}}
-							@endif -->
+							
 						</div>
 						<div class="input-group">
 							<span class="input-group-addon">

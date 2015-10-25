@@ -9,7 +9,11 @@
 @section('image')
 @stop
 @section('lol')
-
+@if(Session::has('success'))
+	<div class = "alert alert-success alertDiv" style="position:absolute;z-index:99999;width:100%;top:123px">{{Session::get('success')}}</div>
+@elseif(Session::has('fail'))
+	<div class = "alert alert-danger alertDiv" style="position:absolute;z-index:99999;width:100%;top:123px">{{Session::get('fail')}}</div>
+@endif
 <div class = "navbar navbar-default">
 <div class = "container pull-left" style="padding:25px;font-family: 'Lobster';font-size:50px;"><a href="{{URL::route('userHome')}}" style="text-decoration:none;color:rgba(64, 62, 59, 1);">Bikee</a></div>	
 	
@@ -22,7 +26,9 @@
 		<?php
 			$counter = 0;
 		?>
+		
 		@foreach($noti as $notification)
+
 			@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
 				@if($notification->read == 0)
 					<?php $counter += 1; ?>
@@ -52,18 +58,28 @@
 		</div>	
 	@endif
 </div>
-<div class="container" id="notificationDiv" style="display:none;position:absolute;width:350px;top:85px;right:120px;z-index:9999;">
+<div class="container" id="notificationDiv" style="display:none;position:absolute;width:280px;top:85px;right:120px;z-index:9999;">
 <div class="container arrow"></div>
-<div class="container"   style="overflow-y:auto;background-color:#fff;border-radius:2px;border:1px solid gray;width:360px;height:250px;top:85px;right:120px;z-index:9999;">
+<div class="container"   style="overflow-y:auto;overflow-x:hidden;background-color:#fff;border-radius:2px;border:1px solid gray;width:280px;max-height:250px;top:85px;right:120px;z-index:9999;">
 <?php
 	$count = 1;
 ?>
+<?php $flag = 0 ?>
+@foreach($noti as $notification)
+	@if($notification->to == Auth::user()->id )
+		<?php $flag = 1; ?>
+	@endif
+@endforeach
+
+	@if($flag == 0)
+		<p style="text-align:center;padding:10px;">No notifications</p>
+	@else
 
 @foreach($noti as $notification)
 	@if(Auth::user()->id == $notification->to && $notification->to != $notification->from)
 		@if($notification->type == 0)
 			<a href="{{URL::route('showBike',$notification->bike)}}" style="color:black;">
-				<div class="container notif" style="border-bottom:1px solid gray;width:340px;padding: 20px 20px;margin-left:-15px">
+				<div class="container notif" style="width:278px;padding: 20px 20px;margin-left:-15px">
 					<b>{{User::find($notification->from)->ImePrz}}</b> commented on <b>{{Bike::find($notification->bike)->ime}}</b>
 				</div>
 			</a>	
@@ -71,7 +87,7 @@
 					$count += 1;
 				?>
 		@elseif($notification->type == 1)
-			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
+			<div class="container notif" style="width:278px;padding: 20px 20px;margin-left:-15px">
 				<b>{{User::find($notification->from)->ImePrz}}</b> rented <b>{{Bike::find($notification->bike)->ime}}</b>
 			</div>
 			<?php
@@ -79,7 +95,7 @@
 			?>
 		@elseif($notification->type == 2)
 		<a href="{{URL::route('showBike',$notification->bike)}}" style="color:black;">
-			<div class="container notif" style="border-bottom:1px solid gray;width:100%;padding: 20px 20px;margin-left:-15px">
+			<div class="container notif" style="width:278px;padding: 20px 20px;margin-left:-15px">
 				<b>{{User::find($notification->from)->ImePrz}}</b> also commented on <b>{{Bike::find($notification->bike)->ime}}</b>
 			</div>
 		</a>
@@ -96,7 +112,7 @@
 		@endif
 	@endif
 @endforeach
-
+@endif
 </div>
 </div>
 <div id="map_canvas02" style="width:100%;margin-top:-20px;margin-left:-10px;height:400px;margin-bottom:20px;border:1px solid #ccc;border:1px solid ccc;"></div>
